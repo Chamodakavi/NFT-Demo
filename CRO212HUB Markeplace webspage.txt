@@ -1,0 +1,289 @@
+# Wallet Reputation DApp - Phase 3 Marketplace Spec (Tiexio-Inspired)
+
+
+
+This is a **complete, ultra-detailed specification** for building the **NFT Marketplace** as part of Phase 3. It's based on the original project SOW, frontend/backend milestones, and the "Marketplacebuild.txt" reference. The goal is to create a clean, data-heavy marketplace inspired by **Tiexio** (which emphasizes minimalistic design, expandable info sections, strong stats/analytics focus, and user-friendly navigation – think OpenSea meets Tensor with heavy emphasis on rarity/traits data, charts, and quick actions).
+
+This spec assumes you've already got the basics from earlier phases (e.g., landing page, mint button/flow, avatar builder with 512x512 resolution + Telegram share button, vault presets, AI generation for NFTs, remix tools, Telegram sync for user data, feature flags for A/B testing, and PWA setup for mobile installs). If any of those are missing, flag it – but this focuses on the marketplace as the "missing piece" to make the app fully complete.
+
+I'll break it down into:
+- **Overview & Requirements**
+- **Frontend Spec** (detailed UI/UX, including Tiexio style guidelines)
+- **Backend Spec** (endpoints, logic, integrations)
+- **Analytics & Graphs** (all the data visualizations you need)
+- **Integrations with Other Phase 3 Features** (avatar, vault, Telegram, etc.)
+- **Testing & Deployment Notes**
+- **Diagram of Marketplace Page Layout** (with drop-down details)
+
+This should give you **everything** to build it step-by-step. Aim for **Week 3-5 milestones** as per the original plan: Frontend first (grid + detail pages), then backend (endpoints + buy flow), then polish (analytics + integrations). Use existing stack: React/Vite for frontend, Node/Express or whatever backend you're on, viem for on-chain interactions, shadcn/ui for components, TanStack Query for data fetching, Recharts for graphs.
+
+If something's unclear, ping me – but this is "greater than great detail" level.
+
+---
+
+## Overview & Requirements
+
+### Project Context
+- **Phase 3 Goal**: Turn the app into a full NFT ecosystem. Users can mint/remix avatars (512x512 PNGs via AI generation), store in vaults, sync with Telegram for sharing, and now **buy/sell on a marketplace**.
+- **Tiexio Style Inspiration**: 
+  - **Clean & Minimal**: White space, sans-serif fonts (e.g., Inter or Roboto), subtle shadows, no clutter.
+  - **Data-Heavy**: Every page/section packed with stats (e.g., rarity scores, price trends, trait breakdowns).
+  - **Expandable Sections**: Use accordions/tabs to hide/show details without overwhelming the user (e.g., traits expand to show percentages).
+  - **Stats Emphasis**: Top bars with key metrics, charts everywhere for trends/volume.
+  - **User-Friendly**: Fast loading (infinite scroll), mobile-first, quick actions (e.g., one-click buy modal).
+- **Key Assumptions**:
+  - NFTs are ERC-721 (or similar) on EVM chain (e.g., Cronos/Eth).
+  - Users connect wallet via WalletConnect or MetaMask.
+  - All images/metadata on IPFS.
+  - Feature flags: Use a toggle (e.g., via env or DB) to enable/disable marketplace until ready.
+  - PWA: Ensure marketplace pages work offline/cached where possible (e.g., listings via service worker).
+
+### High-Level Flow
+1. User lands on `/marketplace` → Sees stats bar + filtered grid of listings.
+2. Filters/sorts → Infinite scroll loads more.
+3. Click NFT → Detail page with buy modal.
+4. Buy: Handles fees, royalties, treasury routing.
+5. Post-buy: Update vault, sync to Telegram if enabled.
+
+### Tech Stack Reminders
+- **Frontend**: React, shadcn/ui (Cards, Tabs, Accordion, Select for dropdowns), TanStack Query (infinite queries), Framer Motion (animations), Sonner (toasts), Recharts (charts), viem (for contract calls).
+- **Backend**: Handle DB (e.g., Mongo/Postgres for listings), Redis for caching stats, viem for event watching.
+- **Security**: Zod for input validation, rate limiting on endpoints, wallet signature verification for listings.
+- **Performance**: Paginate listings (20 per load), cache stats (e.g., floor price recalculated every 5min via cron).
+
+---
+
+## Frontend Spec
+
+Build this in Week 3. Start with wireframes if needed, but aim for pixel-perfect Tiexio vibe: Data-dense but not overwhelming.
+
+### Main Marketplace Page: `/marketplace`
+- **Layout**: Full-width responsive grid. Desktop: Sidebar filters left (20%), main grid right (80%). Mobile: Filters collapse into top dropdown/button.
+- **Top Nav Bar**: Standard app nav (Logo, Search bar for NFT ID/traits, Wallet Connect button, User Profile dropdown, Cart icon for pending buys).
+- **Top Stats Bar**: Horizontal bar with key analytics (see Analytics section below). Use Recharts for mini-charts. Background: Subtle gradient (e.g., #F0F4F8 to white).
+- **Filters Sidebar** (or Mobile Top Menu):
+  - Use shadcn/ui Accordion for collapsible sections.
+  - **Price Filter Dropdown**: shadcn/ui Select.
+    - Options: "Low to High", "High to Low".
+  - **Rarity Filter Dropdown**: shadcn/ui Select.
+    - Options: "Highest Rarity", "Lowest Rarity", "Alphabetical (A-Z)".
+  - **Traits Multi-Select Dropdown**: shadcn/ui MultiSelect or custom.
+    - Categories: Background (Blue, Red, Green, etc.), Eyes (Laser, Normal, Sunglasses, etc.), Mouth, Hat, etc. (Pull from NFT metadata traits).
+    - Allow multiple selections (e.g., "Blue Background + Laser Eyes").
+  - **Sort Dropdown**: shadcn/ui Select.
+    - Options: "Newest", "Oldest", "Most Popular (by views)", "Ending Soon" (if timed auctions, else skip).
+  - **Apply Filters Button**: shadcn/ui Button – Triggers refetch with TanStack Query.
+- **Main Grid**:
+  - Infinite scroll: Use TanStack Query infinite queries (load 20 NFTs per page, fetchMore on scroll).
+  - Card Layout: shadcn/ui Card for each NFT.
+    - Top: 512x512 NFT image (centered, zoom on hover via Framer Motion).
+    - Middle: Title (e.g., "Avatar #1234"), Rarity Score (e.g., "Top 5% Rarity" with progress bar).
+    - Bottom: Price (e.g., "0.5 ETH"), Buy Now button (shadcn/ui Button, opens modal).
+    - Hover: Subtle scale animation (Framer Motion).
+- **Empty State**: If no listings, show "No NFTs listed yet. Mint one?" with link to mint page.
+- **Loading**: Skeleton cards via shadcn/ui Skeleton.
+- **Responsive**: Mobile – Grid 1-column, filters in a sheet (shadcn/ui Sheet triggered by button).
+
+### NFT Detail Page: `/market/[nftId]`
+- **Layout**: Hero section top (image + buy), then expandable tabs below.
+- **Hero Section**:
+  - Left: Large NFT preview (512x512 upscaled to 80% width on desktop, full on mobile).
+  - Right: Title, Description (from metadata), Price (with +3% buyer fee note), "Buy Now" button (opens modal).
+  - Below: Quick stats – Owner, Views, Likes.
+- **Buy Modal**: shadcn/ui Dialog.
+  - Content: Price breakdown (Base: X, Buyer Fee: 3% = Y, Total: Z).
+  - Wallet confirmation via viem writeContract (call marketplace contract's buy function).
+  - Fees transparency: "3% buyer fee supports platform. 6% total platform take routed to treasury for liquidity/buybacks."
+  - Success: Sonner toast + redirect to vault.
+- **Expandable Tabs**: shadcn/ui Tabs (default to "Traits").
+  - **Tab 1: Traits & Rarity**
+    - Accordion list: Each trait (e.g., "Background: Blue (15% rarity)") with percentage bar (Recharts Progress).
+    - Overall Rarity Score: Big number (e.g., "Rank #45 / 10,000") with explanation ("Based on trait uniqueness").
+  - **Tab 2: On-Chain History**
+    - Table (shadcn/ui Table): Timestamp, Event (Mint/Transfer/Sale), From/To Wallet (shortened), Tx Hash (link to explorer).
+    - Fetch via viem readContract or event logs.
+  - **Tab 3: Metadata & IPFS**
+    - JSON view (pretty-printed) of metadata.
+    - IPFS link, File size, Created date.
+    - Mini analytics: "This NFT viewed 50 times, liked 10 times."
+  - **Tab 4: Analytics (if data available)**
+    - Price history chart (Recharts LineChart over time).
+    - Similar NFTs sold (small grid of 3-5 comparable).
+- **Actions Bar**: Sticky bottom on mobile – Share to Telegram button (opens Telegram share with NFT link/image), Add to Vault (if not owned).
+- **Animations**: Framer Motion for tab switches (fade in), image load (scale up).
+
+### General Frontend Notes
+- **Accessibility**: ARIA labels on dropdowns/buttons, keyboard nav for filters.
+- **Error Handling**: Sonner toasts for failed fetches (e.g., "Network error – retry?").
+- **Theming**: Tiexio-clean: Primary color #007BFF (blue), accents #28A745 (green for buy).
+- **Performance**: Optimistic updates for buys (TanStack mutate), lazy load images.
+
+---
+
+## Backend Spec
+
+Build this in Weeks 3-5. Use REST endpoints (or GraphQL if preferred), secure with auth (wallet sig or JWT).
+
+### Database Schema Additions
+- **Listings Table**: _id, nftId (string), sellerWallet (address), price (number), createdAt (date), status (active/sold/cancelled).
+- **Fees Table/Config**: Current rates (buyerFee: 0.03, platformTake: 0.06) – or env vars.
+- **Treasury Multisig**: Env var for address (prep sub-wallets: 50% liquidity, 30% $HUB buybacks, 20% ops).
+
+### Endpoints
+- **POST /market/list**
+  - Body: { nftId, price, signature (for auth) }
+  - Logic: Validate sig with viem, save to DB, emit event.
+  - Response: { success: true, listingId }
+  - Zod: nftId.required(), price.min(0.01)
+
+- **GET /market/listings**
+  - Query Params: ?page=1&limit=20&sort=price_asc&filters={traits: ["blue_background"], rarity_min: 0.1}
+  - Logic: Query DB with filters (Mongo aggregate or SQL WHERE), paginate for infinite scroll.
+  - Response: { listings: [{id, nftId, price, imageUrl, traits, rarity}], totalPages }
+  - Cache: Redis for 5min.
+
+- **POST /market/buy**
+  - Body: { nftId, txHash (optional, if frontend handles tx) }
+  - Logic:
+    1. Fetch listing.
+    2. Calc: buyerTotal = price + (price * 0.03)
+    3. Validate incoming tx value == buyerTotal.
+    4. Deduct seller proceeds: price - (price * royalties) - (price * 0.03 seller fee if any).
+    5. Route platform 6%: To treasury multisig (viem transfer, split via sub-wallets).
+    6. Handle royalties: Use EIP-2981 (query contract for royaltyInfo, deduct from seller).
+    7. Update DB: Mark sold, transfer ownership.
+    8. Watch events: viem watchContractEvent for Transfer → Update reputation/DB.
+  - Response: { success: true, newOwner }
+  - Error: If tx fails, rollback DB.
+
+- **GET /fees/info**
+  - Logic: Return { buyerFee: 0.03, platformTake: 0.06, royaltyRate: "Varies by creator (EIP-2981)" }
+  - Response: For frontend display in modals.
+
+### Other Backend Logic
+- **Event Watching**: viem watch for Mint/Transfer/Sale → Recalc floor price, volume in Redis.
+- **Cron Jobs**: Every 5min – Update global stats (floor, volume, active listings).
+- **Logging**: Pino for all tx/fees (e.g., "Buy NFT#123: Fee $5 routed to treasury").
+- **Integrations**: On buy, auto-add to buyer's vault (call vault endpoint), trigger Telegram sync if user has linked account.
+
+---
+
+## Analytics & Graphs
+
+All graphs use **Recharts** – keep them simple, responsive, with tooltips.
+
+- **Top Stats Bar (Marketplace Main Page)**:
+  - Floor Price Trend: LineChart (X: time 7d/30d/all, Y: price). Data: Aggregate sales DB.
+  - 24h Volume: BarChart (bars for hours, total $).
+  - Active Listings: Simple number + sparkline (mini LineChart for trend).
+  - Owners/Unique Items/Avg Price: Numbers with up/down arrows (compare to yesterday).
+
+- **NFT Detail Page**:
+  - Price History: LineChart (sales over time for this NFT or similar).
+  - Rarity Breakdown: Progress bars per trait (e.g., "Blue Background: 15% rare").
+  - Collection Analytics: PieChart for trait distribution in whole collection.
+
+- **Global Dashboard (Optional, if time)**: Admin-only page with full analytics (total revenue, top sellers, fee breakdowns).
+
+Fetch data via TanStack from backend (/stats endpoint – add if needed: GET /market/stats?period=7d).
+
+---
+
+## Integrations with Other Phase 3 Features
+
+- **Avatar Builder (512x512)**: On mint, generate 512x512 PNG. Marketplace images must display at 512x512 (or scaled). Remix button on detail page: Links to avatar builder with this NFT as base.
+- **Telegram Share/Sync**: On detail page, "Share to Telegram" button: Uses Telegram Web API to share link + image. If user has synced (via Telegram login), auto-post to their channel/group on buy.
+- **Vault Presets**: On buy, auto-add to user's vault (preset folders like "Favorites", "For Sale"). Vault page should have "List on Marketplace" button linking back.
+- **AI Generation**: If NFT was AI-generated, show "AI Remix History" in detail tab (e.g., prompt used).
+- **Feature Flags**: Toggle marketplace visibility (e.g., via localStorage or backend flag).
+- **PWA**: Ensure marketplace works offline (cache listings/images via service worker).
+
+---
+
+## Testing & Deployment Notes
+
+- **Unit Tests**: Jest/Vitest for components (e.g., buy modal calc), endpoints (supertest).
+- **E2E Tests**: Cypress – Full buy flow, filter application, infinite scroll.
+- **Acceptance Criteria**:
+  - Load /marketplace < 2s.
+  - Buy completes with correct fees/transfer.
+  - Filters update grid in real-time.
+  - Mobile: No layout breaks.
+- **Deployment**: Vercel/Netlify for frontend, Heroku/DigitalOcean for backend. Use env for treasury keys.
+- **Bug Fixes**: 30 days post-delivery, as per SOW.
+
+---
+
+## Diagram of Marketplace Page Layout
+
+Here's the ASCII art diagram I generated for clarity (desktop view). It shows the overall structure, including where dropdowns go and their options.
+
+```
+Marketplace Page Layout Diagram (Desktop View - ASCII Art Representation)
+
++----------------------------- TOP NAV BAR -----------------------------+
+| [Logo] [Search Bar] [Wallet Connect] [User Profile] [Cart]           |
++----------------------------------------------------------------------+
+
++--------------- TOP STATS BAR (Full Width) ---------------------------+
+| Floor Price: $X.XX (Trend Chart: Line graph over 7d/30d)             |
+| 24h Volume: $Y.YY (Bar chart) | Active Listings: ZZZ                 |
+| Owners: AAA | Unique Items: BBB | Avg Price: $C.CC                   |
++----------------------------------------------------------------------+
+
++-- LEFT SIDEBAR (Filters - 20% width) --+--- MAIN CONTENT (Grid - 80% width) ---+
+| [Filters Dropdown]                     |                                       |
+| - Price: [Low to High v]               |  +-------+ +-------+ +-------+        |
+|   - Low to High                        |  | NFT1  | | NFT2  | | NFT3  | ...   |
+|   - High to Low                        |  | Image | | Image | | Image |        |
+| - Rarity: [Highest v]                  |  | Price | | Price | | Price |        |
+|   - Highest                            |  +-------+ +-------+ +-------+        |
+|   - Lowest                             |                                       |
+|   - Alphabetical                       |  (Infinite Scroll: Load more on scroll)|
+| - Traits: [Multi-select dropdown]      |                                       |
+|   - Background: Blue, Red, etc.        |                                       |
+|   - Eyes: Laser, Normal, etc.          |                                       |
+| - Newest / Oldest [Sort Dropdown]      |                                       |
+| [Apply Filters Button]                 |                                       |
++----------------------------------------+---------------------------------------+
+
++------------- FOOTER (Full Width) -------------------------------------+
+| [About] [Terms] [Privacy] [Social Links]                             |
++----------------------------------------------------------------------+
+
+Notes:
+- Mobile: Sidebar collapses into top dropdown menu.
+- Dropdowns: Use shadcn/ui Select component.
+- Charts: Recharts for trends/volume.
+```
+
+This should cover **everything** – build it, test it, and let's launch! If you need code snippets (e.g., sample TanStack infinite query), just ask. 🚀
+
+
+OK so when we wrote this up the Flywheel wasint in the plan so we added this.
+
+
+Comprehensive structure: The spec covers frontend (pages, components, layout, responsive, animations, toasts), backend (endpoints, fee/royalty logic, event watching, DB schema hints, cron ideas), analytics/graphs (Recharts specifics), integrations (avatar/vault/Telegram sync, feature flags, PWA), and now the flywheel (fees → treasury splits → buybacks → transparency).
+Explicit Tiexio inspiration: Minimal/clean/data-heavy/expandable sections — he can reference Dribbble/Pinterest/Figma community templates for "NFT marketplace UI" if he needs visual refs (e.g., grid cards with hover, top stats bar, accordions for traits/history).
+Step-by-step build order implied: Backend endpoints & fee logic first → frontend grid/detail → polish with analytics & flywheel UI.
+Acceptance criteria & testing notes: Clear checkboxes for "done" (e.g., fees route correctly, buy modal shows flywheel note, infinite scroll works).
+No big gaps: It ties in your existing features (512x512 avatars, mint flow, vault presets, Telegram share/sync, AI generation/remix) so he knows how to hook them up (e.g., "List on Marketplace" from vault, auto-add bought NFT to vault, Telegram notify on buyback events).
+
+If he's your "main DEV" (someone who's already deep in the codebase), this should feel like a detailed ticket/brief rather than a vague "build a marketplace" ask.
+Quick Enhancements to Make It Even Better for Him
+Before sending, consider adding these small additions/clarifications (you can paste them directly):
+
+Repo & Branch Guidance
+"Work in a new branch: feature/phase3-marketplace. Merge to main only after full testing. Use existing env vars for chain RPC, contract addresses (marketplace, $HUB, treasury multisig). If missing any (e.g., EIP-2981 royalty contract), flag immediately."
+Priorities / Phased Delivery (to avoid overwhelm)
+Phase A (Week 3): Backend endpoints (/list, /listings, /buy, /fees/info) + basic fee calc/treasury routing. Test with Postman.
+Phase B (Week 3-4): Frontend /marketplace grid + infinite scroll + filters/dropdowns + detail page skeleton.
+Phase C (Week 4-5): Buy modal with viem + fee transparency + flywheel note + tabs (traits/history/metadata).
+Phase D (Polish): Recharts graphs, flywheel widget/dashboard, Telegram sync on buy, vault auto-add, mobile testing.
+Deliver demos: 2-5 min screen record per phase (as in your earlier SOW rules), plus GitHub commit links.
+
+Flywheel Clarifications (since you added it later)
+Add a note:
+"The flywheel is the core economic loop we realized was under-spec'd earlier. Prioritize transparent routing (40-50% liquidity, 30% $HUB buybacks) and UI explanation over full automation at launch — we can add cron/buyback triggers in a hotfix if needed. Use testnet for any swap/buyback tests."
+Visual Refs for Tiexio Style
+"For inspiration: Search Dribbble/Pinterest for 'NFT marketplace UI' — look for clean grids with top stats bars, expandable trait sections, and minimal cards (similar to Tensor or Magic Eden modern designs). Avoid overly flashy/neon styles — keep it professional/data-focused."

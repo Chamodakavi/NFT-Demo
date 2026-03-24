@@ -1,0 +1,196 @@
+Yes, absolutely — we can make the warrior’s eyes animated! That will look incredibly badass and premium, giving the hero section a living, high-tech cyber feel that ties perfectly into the neon cyan accents and flywheel energy we’re building.
+Here’s the quick update I recommend adding to the spec (or you can just send this as a short addendum to your dev):
+Hero Warrior Eye Animation
+• Change eye glow color to electric cyan (#00F5FF) as discussed.
+• Make the eyes subtly animated: slow pulsing glow (gentle brightness breathing every 2–3 seconds) + very light horizontal scan-line or energy flicker across the eyes (like a holographic HUD activating).
+• Keep it elegant — not too flashy, just enough to make the character feel alive and immersive without distracting from the rest of the page.
+• Tech: Use CSS keyframes or Framer Motion for smooth, performant animation. If the asset is a video/GIF or layered PNG, we can overlay the eye effect; otherwise regenerate with AI using the prompt below.
+Ready-to-use AI Image Prompt (for regenerating the warrior with animated-ready eyes):“Ultra-detailed cinematic cyberpunk armored warrior helmet close-up, glowing electric cyan eyes with subtle pulsing animation and light holographic scan-line flicker, intense red-orange neon armor with black metallic details, dramatic fiery red-orange nebula background with floating energy particles, high contrast, premium NFT hero style, 8k resolution, dramatic lighting, cyberpunk aesthetic –ar 16:9 –stylize 250”
+Would you like me to:
+• Add this eye animation detail directly into the full updated spec I sent you last time (and re-send the whole thing with the change included)?
+• Or just send a short “Hero Animation Addendum” you can paste on top of the existing spec?
+• Or anything else (like more animation ideas for the flywheel tab or glowing rarity bars)?
+
+Can I help you with that? Here’s the complete, ready-to-copy-and-paste Phase 3 Marketplace Spec updated for your NFT site.
+It combines everything we’ve discussed: the original Tiexio-inspired structure, the CRO212HUB screenshot details you shared, the premium color refresh (deep black base with electric cyan + neon purple accents to balance the red), the warrior hero eye-color change, all the badass immersive touches, and the dedicated Flywheel Economy tab as its own prominent feature.
+Just copy the whole block below and send it to your dev.
+
+
+
+NFT Marketplace – Phase 3 Full Specification (Tiexio-Inspired + Premium Upgrades)
+This is the complete, ultra-detailed spec for the NFT Marketplace. It builds on the original SOW, the Tiexio-style clean/data-heavy approach, and the exact CRO212HUB screenshots provided. The goal is a premium, immersive, badass dark cyber NFT marketplace with visible flywheel economics, balanced neon accents, and high-end details that make users feel they’re on a top-tier platform.
+Key Design Direction
+• Base: Deep black (#0A0A0A) with subtle gradients.
+• Accents: Red/neon-pink (#FF0033) for badges & CTAs + new electric cyan (#00F5FF) for progress bars, glows & positive elements + neon purple (#C026D3) for rarity & scarcity highlights.
+• Hero warrior: Change eye glow from red/orange to electric cyan (#00F5FF) with subtle purple rim light and holographic scan-line effect.
+• Overall vibe: Dark, intense, holographic, data-dense, and premium — think CRO212HUB meets Tensor with extra polish.
+Tech Stack (unchanged)React/Vite + shadcn/ui + TanStack Query (infinite scroll) + Framer Motion (animations & particles) + Recharts (charts) + viem + Sonner toasts.
+Main Marketplace Page: /marketplace
+• Top Nav: Logo, Search (by ID or traits), Wallet Connect, Profile, Cart.
+• Market Overview Bar (full-width, matches screenshot):Cards for Floor Price (with sparkline), 24h Volume (bar chart), Listed, Owners, Unique Items, Avg Price. Use Recharts mini-charts + live number animations. Add compact Flywheel Widget in top-right showing 3-step mini loop + “See Full Flywheel” link.
+• Filters Sidebar (20% desktop, collapses to top sheet on mobile):Price (Low→High / High→Low), Rarity, Sort (Newest, etc.), expandable Traits (Background, Eyes, Mouth, Hat, etc. – multi-select). Neon cyan accents on active filters.
+• NFT Grid (infinite scroll, 20 per load):Cards with large image, glowing “HOT DROP” / “VERIFIED” / “RARE” / “NEW” badges (neon outlines), rarity progress bar (cyan-to-purple gradient), price in CRO, subtle particle burst on hover, “VIEW” button. Glassmorphism overlay + lift animation (Framer Motion).
+• Empty state & skeletons as before.
+NFT Detail Page: /market/\[nftId]
+• Hero section: Large NFT image (left) + title, description, current price + 3% buyer fee, big glowing “EXECUTE PURCHASE” button (matches screenshot). Quick stats: Owner, Views, Likes.
+• Tabs (default to Traits):
+1 Traits & Rarity – Accordion with per-trait bars + % labels (RARE / UNCOMMON / LEGENDARY) + overall rarity rank with glowing red/cyan bar.
+2 On-Chain History – Table: Timestamp, Event, From/To, Tx Hash (explorer link).
+3 Metadata & IPFS – Pretty-printed JSON + copy button, IPFS link, file size, created date.
+4 Flywheel Economy (new dedicated tab – glowing cyan icon):
+▪ Header: “How This Purchase Powers the Flywheel” with particle animation.
+▪ Visual 3-step loop (horizontal or vertical on mobile) with glowing connecting lines:• Fee Collected (3% example calculated live)• Treasury Split – animated bars: 50% Liquidity (cyan), 30% $HUB Buybacks (purple), 20% Ops/Rewards (red)• Real Impact – today’s fees routed, $HUB bought back, liquidity added.
+▪ Transparency bullets with explorer links.
+▪ Impact metric cards (all-time / 30d).
+▪ CTA: “Buy Now & Fuel the Flywheel” that opens purchase modal.
+5 Analytics – Price history line chart (Recharts), similar NFTs grid.
+• Mobile actions bar: Like, Share, Telegram, Add to Vault.
+Buy ModalPrice breakdown + “Your fee directly fuels the Flywheel – view details in the Flywheel tab.” Success toast + redirect to vault.
+Backend & Flywheel Logic
+• Existing endpoints (/list, /listings, /buy, /fees/info) + new GET /flywheel/stats (fees routed, splits, buybacks – Redis cached, cron every 5 min).
+• On buy: calculate & route fees to treasury multisig (50/30/20 split), update flywheel stats.
+• Event watching for transfers & sales.
+Landing Page Integration & Premium Details
+• Hero: Updated warrior with cyan eyes + holographic particles + pulsing neon button borders. Subheadline: “Discover, Collect & Trade the Rarest Digital Assets on Cronos.”
+• Hot Drops teaser: Match full grid style with rarity bars and neon badges.
+• Low Fees / How It Works: Add “Powered by Flywheel Economics” neon badge linking to flywheel modal.
+• Global: Consistent neon glows, Framer Motion hover lifts + particle bursts, live tickers, glassmorphism cards, subtle scan-line textures for tech depth.
+Integrations
+• Vault auto-add on purchase, Telegram share button, remix link to avatar builder, PWA support, feature flags.
+Testing & Delivery
+• Phases: Color + hero update → Flywheel tab + widget → Full grid/detail animations + live stats.
+• Deliver screen recordings per phase + GitHub branch: feature/phase3-marketplace.
+• Acceptance: Loads fast, flywheel tab clearly explains economics, neon accents feel premium and balanced, mobile perfect, buy flow works end-to-end.
+
+
+
+There you go — one complete, copy-and-paste spec with everything together.
+Want me to tweak any section (more copy examples, sample code snippets for the flywheel diagram, or a separate AI prompt for the warrior eyes)? Or shall we add anything else before you send it? Just let me know how you’d like to move forward — I’m here to refine it until it’s perfect.
+
+
+Here is a page layout for the flywheel tab
+
+
+
+Can I help you with that? Yes — adding a clear diagram for the Flywheel Economy tab (and the compact widget) will make it much easier for your dev to visualize and build exactly what we want. It keeps everything feeling premium, transparent, and badass while matching the dark cyber-neon style of your CRO212HUB screenshots.
+Here’s a clean, ready-to-paste Flywheel Diagram Addendum you can add to the full spec I sent earlier (or send as a separate note). I’ve included both a text-based ASCII diagram (easy to copy) and a detailed description your dev can turn into a beautiful Framer Motion component.
+
+
+
+Flywheel Economy Tab – Layout Diagram & Details (Addendum)
+Goal: Give the Flywheel tab its own immersive, data-rich space that feels premium and trustworthy. Use electric cyan and neon purple accents for the flow, with subtle particle glows and Framer Motion animations.
+Desktop Layout (recommended)
++---------------------------------------------------------------+
+| FLYWHEEL ECONOMY |
+| How This Purchase Powers the Platform |
++---------------------------------------------------------------+
+| |
+| [Step 1 Icon] ────▶ [Step 2 Icons] ────▶ [Step 3 Icon] |
+| Fee Collected Treasury Split Real Impact |
+| |
+| 3% Buyer Fee 50% Liquidity (cyan bar) Today: X CRO routed
+| 30% $HUB Buybacks (purple) $HUB bought back: Y
+| 20% Ops & Rewards (red) Liquidity added: Z
+| |
+| [Animated Flow Lines with pulsing neon glow] |
+| |
+| Transparency Section |
+| • All splits executed via multisig → [Explorer Link] |
+| • Buybacks increase scarcity & holder value |
+| • Liquidity supports tighter spreads |
+| |
+| Impact Metrics (3 small glowing cards) |
+| Total Fees All-Time 30d Fees Community Rewards |
+| [Big Number] [Big Number] [Big Number] |
+| |
+| [Big Glowing CTA Button] Buy Now & Fuel the Flywheel |
++---------------------------------------------------------------+
+Mobile LayoutStack the 3 steps vertically with glowing connecting lines between them. Keep cards and metrics in a clean single column.
+Visual Style Notes
+• Background: Subtle dark gradient with very faint holographic grid or scan-line texture.
+• Icons: Simple glowing SVGs (coin for fee, vault for liquidity, rocket for buybacks, trophy for rewards).
+• Animations (Framer Motion):
+◦ Bars fill smoothly when tab opens.
+◦ Connecting lines pulse with neon cyan energy.
+◦ Numbers count up on load.
+◦ Optional soft particle burst when hovering over any step.
+• Colors: Cyan for liquidity/positive flow, purple for buybacks/scarcity, minimal red for ops.
+• Live data: Pull from new /flywheel/stats endpoint (today’s routed fees, buybacks, etc.).
+Compact Flywheel Widget (for Marketplace Overview bar & Landing teaser)Small horizontal bar or floating badge showing:“3% Fee → 50% Liquidity | 30% Buybacks | 20% Ops” with tiny animated bars + “View Full Flywheel” link that scrolls to or opens the tab example.
+This diagram keeps the tab clean yet data-heavy, exactly like the Traits and Metadata sections in your CRO212HUB screenshots, while making the economics feel exciting and premium.
+Would you like me to:
+• Send the full spec again with this Flywheel diagram section fully integrated (so everything is in one clean copy-paste block)?
+• Or add a sample React/Framer Motion code snippet for the diagram so your dev can implement it faster?
+• Or anything else (like more animation ideas for the warrior eyes or rarity bars)?
+Just let me know how you’d like to move forward and I’ll update it for you right away. We’re getting really close to a badass, premium site! What sounds best?
+
+Animation code snippets
+Framer Motion animation code for the two things you mentioned (warrior eyes + sequential Hot Drops blinking), plus the other premium animations I recommended to make the whole site feel badass and alive.
+Just copy and paste these snippets into your components.
+1. Warrior Hero Eyes – Pulsing Cyan Glow + Scan-line Flicker
+import { motion } from "framer-motion";
+
+
+
+export const AnimatedHeroEyes = () => (
+<>
+{/* Left Eye */}
+
+
+
+{/* Right Eye */}
+
+
+
+{/* Subtle scan-line flicker */}
+
+
+
+);
+How to use: Place this component absolutely over your warrior hero image (adjust top/left percentages to match the eye positions exactly).
+2. Sequential Hot Drops Blink Animation (one card lights up at a time)
+import { motion } from "framer-motion";
+
+
+
+export const AnimatedHotDropCard = ({ item, index }: { item: any; index: number }) => (
+
+
+
+{/* Pulsing neon border that blinks sequentially */}
+
+
+
+{/* Your normal card content here */}
+
+
+
+{/* HOT DROP badge */}
+
+
+
+HOT DROP
+
+
+
+{/* Image, title, price, rarity bar, etc. */}
+
+
+
+);
+Use it in your Hot Drops grid like this:
+{hotDrops.map((item, index) => (
+
+
+
+))}
+Bonus Quick Animations You’ll Probably Want
+Rarity Progress Bar (smooth fill + glow)
+
+
+
+Flywheel Flow Line Pulse (add between steps in the diagram)
+
+
+
+

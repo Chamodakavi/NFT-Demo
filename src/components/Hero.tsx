@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 function Hero() {
   const stats = [
@@ -33,12 +34,13 @@ function Hero() {
                 <div className="block w-full h-[2px] overflow-hidden shadow-[0px_6px_4px_0px_rgba(0,0,0,0.5),0px_8px_16px_0px_rgba(179,9,4,0.6)]">
                   <div className="h-full  bg-gradient-to-r from-transparent via-red-500/50 to-transparent animate-grow-width " />
                 </div>
-                <button
-                  className="bg-brand-dark shadow-[inset_0px_2px_8px_0px_rgba(0,0,0,0.5)] rounded-[9px] px-6 py-2.5 text-md md:text-xl font-bold tracking-[0.02em] hover:bg-white/5 hover:scale-105 transition-all w-full sm:w-auto text-white animate-fade-in-up"
+                <Link
+                  href="/marketplace"
+                  className="block bg-brand-dark shadow-[inset_0px_2px_8px_0px_rgba(0,0,0,0.5)] rounded-[9px] px-6 py-2.5 text-md md:text-xl font-bold tracking-[0.02em] hover:bg-white/5 hover:scale-105 transition-all w-full sm:w-auto text-white animate-fade-in-up text-center"
                   style={{ animationDelay: "0.45s" }}
                 >
                   Explore Marketplace
-                </button>
+                </Link>
               </div>
             </div>
           </div>
