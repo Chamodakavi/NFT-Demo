@@ -40,8 +40,8 @@ export function CyberNavbar() {
   };
 
   const navItems = [
-    { label: "Explore", href: "/v2/home" },
-    { label: "Marketplace", href: "/v2" },
+    { label: "Explore", href: "/" },
+    { label: "Marketplace", href: "/marketplace" },
     { label: "Features", href: "#" },
     { label: "How It Works", href: "#" },
     { label: "Community", href: "#" },
@@ -87,7 +87,7 @@ export function CyberNavbar() {
 
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 h-20 flex items-center justify-between relative">
         {/* Logo */}
-        <Link href="/v2" className="flex items-center gap-3 group cursor-pointer" aria-label="CRO212HUB Home">
+        <Link href="/" className="flex items-center gap-3 group cursor-pointer" aria-label="CRO212HUB Home">
           <div
             className="w-8 h-8 bg-[#00f0ff]/20 border border-[#00f0ff]/60 rotate-45 flex items-center justify-center transition-all group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(0,240,255,0.6)]"
             style={{ boxShadow: "0 0 12px rgba(0,240,255,0.4)" }}
@@ -164,7 +164,7 @@ export function CyberNavbar() {
                   {searchResults.map((nft) => (
                     <Link
                       key={nft.id}
-                      href={`/v2/${nft.id}`}
+                      href={`/marketplace/${nft.id}`}
                       className="flex items-center gap-3 px-3 py-2.5 hover:bg-[#00f0ff]/10 transition-colors border-b border-[#00f0ff]/10 last:border-b-0"
                       onClick={() => {
                         setSearchOpen(false);

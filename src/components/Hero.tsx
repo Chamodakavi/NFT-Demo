@@ -35,7 +35,7 @@ function Hero() {
                   <div className="h-full  bg-gradient-to-r from-transparent via-red-500/50 to-transparent animate-grow-width " />
                 </div>
                 <Link
-                  href="/marketplace"
+                  href="/v1/marketplace"
                   className="block bg-brand-dark shadow-[inset_0px_2px_8px_0px_rgba(0,0,0,0.5)] rounded-[9px] px-6 py-2.5 text-md md:text-xl font-bold tracking-[0.02em] hover:bg-white/5 hover:scale-105 transition-all w-full sm:w-auto text-white animate-fade-in-up text-center"
                   style={{ animationDelay: "0.45s" }}
                 >

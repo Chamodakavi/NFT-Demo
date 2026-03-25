@@ -1,18 +1,17 @@
-import FeaturedCol from "@/components/FeaturedCol";
-import Footer from "@/components/Footer";
-import Hero from "@/components/Hero";
-import HotDrops from "@/components/HotDrops";
-import { Navbar } from "@/components/NavBar";
-import Image from "next/image";
+import { CyberNavbar } from "@/components/marketplace-v2/CyberNavbar";
+import { CyberFooter } from "@/components/marketplace-v2/CyberFooter";
+import CyberHero from "@/components/home-v2/CyberHero";
+import CyberFeaturedCol from "@/components/home-v2/CyberFeaturedCol";
+import CyberHotDrops from "@/components/home-v2/CyberHotDrops";
 
-export default function Home() {
+export default function CyberHomePage() {
   return (
-    <div className="mx-15">
-      <Navbar />
-      <Hero />
-      <FeaturedCol />
-      <HotDrops />
-      <Footer />
+    <div>
+      <CyberNavbar />
+      <CyberHero />
+      <CyberFeaturedCol />
+      <CyberHotDrops />
+      <CyberFooter />
     </div>
   );
 }

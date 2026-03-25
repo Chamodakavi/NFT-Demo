@@ -61,7 +61,7 @@ function CyberFeaturedCol() {
                 {featuredNfts.map((nft) => (
                   <Link
                     key={nft.id}
-                    href={`/v2/${nft.id}`}
+                    href={`/marketplace/${nft.id}`}
                     className="flex-shrink-0 w-full snap-start relative group cursor-pointer"
                   >
                     <div className="relative aspect-[16/10] overflow-hidden cyber-scanline">
@@ -172,7 +172,7 @@ function CyberFeaturedCol() {
                 {gridNfts.map((nft) => (
                   <Link
                     key={nft.id}
-                    href={`/v2/${nft.id}`}
+                    href={`/marketplace/${nft.id}`}
                     className="group relative overflow-hidden bg-[#080812]/90 border border-[#00f0ff]/10 hover:border-[#00f0ff]/40 hover:shadow-[0_0_15px_rgba(0,240,255,0.2)] transition-all"
                     style={{ clipPath: "polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))" }}
                   >
@@ -200,7 +200,7 @@ function CyberFeaturedCol() {
                 {gridNfts.map((nft) => (
                   <Link
                     key={nft.id}
-                    href={`/v2/${nft.id}`}
+                    href={`/marketplace/${nft.id}`}
                     className="group flex items-center gap-3 p-2 bg-[#080812]/90 border border-[#00f0ff]/10 hover:border-[#00f0ff]/40 hover:shadow-[0_0_10px_rgba(0,240,255,0.15)] transition-all"
                     style={{ clipPath: "polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))" }}
                   >
@@ -219,7 +219,7 @@ function CyberFeaturedCol() {
 
             {/* View All link */}
             <Link
-              href="/v2"
+              href="/marketplace"
               className="flex items-center justify-center mt-3 py-2 bg-[#080812]/60 border border-[#00f0ff]/15 text-[10px] font-mono text-[#00f0ff]/50 hover:text-[#00f0ff] hover:border-[#00f0ff]/40 transition-all uppercase tracking-widest"
               style={{ clipPath: "polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))" }}
             >

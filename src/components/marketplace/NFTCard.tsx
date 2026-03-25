@@ -23,7 +23,7 @@ export function NFTCard({ nft }: NFTCardProps) {
           : "bg-blue-500";
 
   return (
-    <Link href={`/marketplace/${nft.id}`} className="group cursor-pointer block">
+    <Link href={`/v1/marketplace/${nft.id}`} className="group cursor-pointer block">
       <div className="relative rounded-xl overflow-hidden border border-white/10 bg-black/40 backdrop-blur-md transition-all duration-300 hover:border-red-900/50 hover:shadow-[0_0_20px_rgba(220,38,38,0.15)]">
         {/* Image */}
         <div className="relative aspect-square overflow-hidden">

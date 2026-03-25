@@ -239,9 +239,9 @@ export function CyberStatsBar() {
           <FlywheelMiniBar label="Ops" percent={20} color="#ff0040" />
         </div>
 
-        <button className="text-[9px] font-mono text-[#C026D3] hover:text-[#C026D3]/80 transition-colors uppercase tracking-widest whitespace-nowrap">
+        <Link href="/flywheel" className="text-[9px] font-mono text-[#C026D3] hover:text-[#C026D3]/80 transition-colors uppercase tracking-widest whitespace-nowrap">
           {"View Full Flywheel >>"}
-        </button>
+        </Link>
       </div>
     </div>
   );

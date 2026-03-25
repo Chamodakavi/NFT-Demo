@@ -13,8 +13,8 @@ export function Navbar() {
   const profileRef = useRef<HTMLDivElement>(null);
 
   const navItems = [
-    { label: "Explore", href: "/" },
-    { label: "Marketplace", href: "/marketplace" },
+    { label: "Explore", href: "/v1" },
+    { label: "Marketplace", href: "/v1/marketplace" },
     { label: "Features", href: "#" },
     { label: "How It Works", href: "#" },
     { label: "Community", href: "#" },
@@ -48,7 +48,7 @@ export function Navbar() {
 
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 h-20 flex items-center justify-between relative">
         {/* Logo Section */}
-        <Link href="/" className="flex items-center gap-3 group cursor-pointer" aria-label="CRO212HUB Home">
+        <Link href="/v1" className="flex items-center gap-3 group cursor-pointer" aria-label="CRO212HUB Home">
           <div className="w-8 h-8 bg-blue-600 rounded-lg rotate-45 flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-transform group-hover:scale-110">
             <div className="-rotate-45 font-bold text-white text-[10px]">C</div>
           </div>

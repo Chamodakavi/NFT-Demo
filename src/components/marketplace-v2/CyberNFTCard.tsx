@@ -21,7 +21,7 @@ export function CyberNFTCard({ nft, index = 0 }: CyberNFTCardProps) {
 
   return (
     <Link
-      href={`/v2/${nft.id}`}
+      href={`/marketplace/${nft.id}`}
       className="group cursor-pointer block"
       style={{ animation: `cyber-slide-in 0.5s ease-out ${index * 0.07}s both` }}
     >

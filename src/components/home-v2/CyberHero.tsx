@@ -65,7 +65,7 @@ function CyberHero() {
                 {">> MINT_NOW"}
               </button>
               <Link
-                href="/v2"
+                href="/marketplace"
                 className="block px-7 py-2.5 bg-[#080812]/80 border border-[#00f0ff]/20 text-xs font-bold font-mono uppercase tracking-[0.15em] text-[#7dd3fc]/50 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 transition-all text-center"
                 style={{
                   clipPath: "polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))",

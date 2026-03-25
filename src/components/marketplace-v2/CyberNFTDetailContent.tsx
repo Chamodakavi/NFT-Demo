@@ -22,7 +22,7 @@ export function CyberNFTDetailContent({ nft }: CyberNFTDetailContentProps) {
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20 py-8">
         {/* Back Link */}
         <Link
-          href="/v2"
+          href="/marketplace"
           className="inline-flex items-center gap-2 text-xs text-[#7dd3fc]/40 hover:text-[#00f0ff] transition-colors mb-6 font-mono"
         >
           <ArrowLeft className="w-4 h-4" />

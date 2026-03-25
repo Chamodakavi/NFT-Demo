@@ -25,7 +25,7 @@ export function NFTDetailContent({ nft }: NFTDetailContentProps) {
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20 py-8">
         {/* Back Link */}
         <Link
-          href="/marketplace"
+          href="/v1/marketplace"
           className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors mb-6"
         >
           <ArrowLeft className="w-4 h-4" />

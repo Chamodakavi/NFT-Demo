@@ -1,6 +1,6 @@
-import { Navbar } from "@/components/NavBar";
-import Footer from "@/components/Footer";
-import { NFTDetailContent } from "@/components/marketplace/NFTDetailContent";
+import { CyberNavbar } from "@/components/marketplace-v2/CyberNavbar";
+import { CyberFooter } from "@/components/marketplace-v2/CyberFooter";
+import { CyberNFTDetailContent } from "@/components/marketplace-v2/CyberNFTDetailContent";
 import { mockNfts } from "@/data/mockNfts";
 import { notFound } from "next/navigation";
 
@@ -8,7 +8,7 @@ interface PageProps {
   params: Promise<{ nftId: string }>;
 }
 
-export default async function NFTDetailPage({ params }: PageProps) {
+export default async function CyberNFTDetailPage({ params }: PageProps) {
   const { nftId } = await params;
   const nft = mockNfts.find((n) => n.id === nftId);
 
@@ -17,10 +17,10 @@ export default async function NFTDetailPage({ params }: PageProps) {
   }
 
   return (
-    <div className="mx-4 md:mx-15">
-      <Navbar />
-      <NFTDetailContent nft={nft} />
-      <Footer />
+    <div>
+      <CyberNavbar />
+      <CyberNFTDetailContent nft={nft} />
+      <CyberFooter />
     </div>
   );
 }
