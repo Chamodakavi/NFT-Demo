@@ -170,12 +170,12 @@ export function CyberFilterSidebar({ filters, onFilterChange }: CyberFilterSideb
     <>
       <button
         onClick={() => setMobileOpen(true)}
-        className="lg:hidden flex items-center gap-2 px-4 py-2.5 bg-[#080812] cyber-border text-sm text-[#00f0ff] font-mono hover:shadow-[0_0_15px_rgba(0,240,255,0.3)] transition-all"
+        className="lg:hidden relative flex items-center justify-center w-10 h-10 bg-[#080812] cyber-border text-[#00f0ff] hover:shadow-[0_0_15px_rgba(0,240,255,0.3)] transition-all"
+        style={{ clipPath: "polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))" }}
         aria-label="Open filters"
       >
         <SlidersHorizontal className="w-4 h-4" />
-        FILTERS
-        {hasActiveFilters && <span className="w-2 h-2 bg-[#00f0ff] rounded-full shadow-[0_0_8px_rgba(0,240,255,0.8)]" />}
+        {hasActiveFilters && <span className="absolute top-1 right-1 w-2 h-2 bg-[#00f0ff] rounded-full shadow-[0_0_8px_rgba(0,240,255,0.8)]" />}
       </button>
 
       <aside

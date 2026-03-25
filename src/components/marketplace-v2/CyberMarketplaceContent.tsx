@@ -55,9 +55,16 @@ export function CyberMarketplaceContent() {
           style={{ boxShadow: "0 0 10px rgba(0,240,255,0.5), 0 0 30px rgba(0,240,255,0.15)", animation: "neon-pulse 3s infinite" }}
         />
 
-        {/* Main Content: Sidebar + Grid */}
-        <div className="flex gap-6 items-start">
+        {/* Mobile: filter icon right-aligned above grid */}
+        <div className="flex justify-end mb-4 lg:hidden">
           <CyberFilterSidebar filters={filters} onFilterChange={setFilters} />
+        </div>
+
+        {/* Main Content: Sidebar (desktop) + Grid */}
+        <div className="flex gap-6 items-start">
+          <div className="hidden lg:block">
+            <CyberFilterSidebar filters={filters} onFilterChange={setFilters} />
+          </div>
           <CyberNFTGrid nfts={mockNfts} filters={filters} />
         </div>
       </div>
