@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CyberStatsBar } from "./CyberStatsBar";
 import { CyberFilterSidebar, type FilterState } from "./CyberFilterSidebar";
 import { CyberNFTGrid } from "./CyberNFTGrid";
+import { CyberAdBanner } from "./CyberAdBanner";
 import { mockNfts } from "@/data/mockNfts";
 
 export function CyberMarketplaceContent() {
@@ -54,6 +55,11 @@ export function CyberMarketplaceContent() {
           className="w-full h-[2px] mb-8 bg-[#00f0ff]/30"
           style={{ boxShadow: "0 0 10px rgba(0,240,255,0.5), 0 0 30px rgba(0,240,255,0.15)", animation: "neon-pulse 3s infinite" }}
         />
+
+        {/* Ad Banner */}
+        <div className="mb-8">
+          <CyberAdBanner />
+        </div>
 
         {/* Mobile: filter icon right-aligned above grid */}
         <div className="flex justify-end mb-4 lg:hidden">
