@@ -44,7 +44,7 @@ function CyberFeaturedCol() {
           <div className="h-[1px] flex-grow bg-gradient-to-r from-[#00f0ff]/60 to-transparent" style={{ boxShadow: "0 0 8px rgba(0,240,255,0.3)" }} />
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex flex-col lg:flex-row lg:items-stretch gap-6">
           {/* Left: Slider (60%) */}
           <div className="w-full lg:w-[58%]">
             <div
@@ -142,9 +142,9 @@ function CyberFeaturedCol() {
           </div>
 
           {/* Right: Grid/List (40%) */}
-          <div className="w-full lg:w-[42%]">
+          <div className="w-full lg:w-[42%] flex flex-col">
             {/* Toggle header */}
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] text-[#7dd3fc]/40 font-mono uppercase tracking-widest">
                 {"// latest_drops"}
               </span>
@@ -168,25 +168,25 @@ function CyberFeaturedCol() {
 
             {/* Grid View */}
             {viewMode === "grid" && (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-2">
+              <div className="grid grid-cols-3 gap-1.5 flex-1 overflow-hidden content-start">
                 {gridNfts.map((nft) => (
                   <Link
                     key={nft.id}
                     href={`/marketplace/${nft.id}`}
                     className="group relative overflow-hidden bg-[#080812]/90 border border-[#00f0ff]/10 hover:border-[#00f0ff]/40 hover:shadow-[0_0_15px_rgba(0,240,255,0.2)] transition-all"
-                    style={{ clipPath: "polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))" }}
+                    style={{ clipPath: "polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))" }}
                   >
-                    <div className="aspect-square overflow-hidden">
+                    <div className="aspect-[4/3] overflow-hidden relative">
                       <img src={nft.image} alt={nft.title} className="w-full h-full object-cover brightness-80 group-hover:brightness-100 group-hover:scale-110 transition-all duration-500" />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#080812] via-transparent to-transparent" />
                     </div>
-                    <div className="p-2">
-                      <h4 className="text-[10px] font-mono text-[#e0f0ff] truncate">{nft.title}</h4>
-                      <div className="flex items-center justify-between mt-1">
-                        <span className="text-[10px] font-mono text-[#ffcc00]" style={{ textShadow: "0 0 4px rgba(255,204,0,0.4)" }}>
-                          {nft.price} CRO
+                    <div className="px-1.5 py-1">
+                      <h4 className="text-[9px] font-mono text-[#e0f0ff] truncate">{nft.title}</h4>
+                      <div className="flex items-center justify-between">
+                        <span className="text-[9px] font-mono text-[#ffcc00]" style={{ textShadow: "0 0 4px rgba(255,204,0,0.4)" }}>
+                          {nft.price}
                         </span>
-                        <span className="text-[8px] font-mono text-[#00f0ff]/40">#{nft.rarity}</span>
+                        <span className="text-[7px] font-mono text-[#00f0ff]/40">#{nft.rarity}</span>
                       </div>
                     </div>
                   </Link>
@@ -196,21 +196,21 @@ function CyberFeaturedCol() {
 
             {/* List View */}
             {viewMode === "list" && (
-              <div className="space-y-1.5">
+              <div className="space-y-1 flex-1 overflow-hidden">
                 {gridNfts.map((nft) => (
                   <Link
                     key={nft.id}
                     href={`/marketplace/${nft.id}`}
-                    className="group flex items-center gap-3 p-2 bg-[#080812]/90 border border-[#00f0ff]/10 hover:border-[#00f0ff]/40 hover:shadow-[0_0_10px_rgba(0,240,255,0.15)] transition-all"
+                    className="group flex items-center gap-2 p-1.5 bg-[#080812]/90 border border-[#00f0ff]/10 hover:border-[#00f0ff]/40 hover:shadow-[0_0_10px_rgba(0,240,255,0.15)] transition-all"
                     style={{ clipPath: "polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))" }}
                   >
-                    <img src={nft.image} alt={nft.title} className="w-10 h-10 object-cover flex-shrink-0 brightness-80 group-hover:brightness-100 transition-all" style={{ clipPath: "polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px))" }} />
+                    <img src={nft.image} alt={nft.title} className="w-8 h-8 object-cover flex-shrink-0 brightness-80 group-hover:brightness-100 transition-all" style={{ clipPath: "polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px))" }} />
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-[10px] font-mono text-[#e0f0ff] truncate">{nft.title}</h4>
-                      <span className="text-[9px] font-mono text-[#7dd3fc]/30">Rank #{nft.rarity}</span>
+                      <h4 className="text-[9px] font-mono text-[#e0f0ff] truncate">{nft.title}</h4>
+                      <span className="text-[8px] font-mono text-[#7dd3fc]/30">Rank #{nft.rarity}</span>
                     </div>
-                    <span className="text-[10px] font-mono text-[#ffcc00] flex-shrink-0" style={{ textShadow: "0 0 4px rgba(255,204,0,0.4)" }}>
-                      {nft.price} CRO
+                    <span className="text-[9px] font-mono text-[#ffcc00] flex-shrink-0" style={{ textShadow: "0 0 4px rgba(255,204,0,0.4)" }}>
+                      {nft.price}
                     </span>
                   </Link>
                 ))}
@@ -220,7 +220,7 @@ function CyberFeaturedCol() {
             {/* View All link */}
             <Link
               href="/marketplace"
-              className="flex items-center justify-center mt-3 py-2 bg-[#080812]/60 border border-[#00f0ff]/15 text-[10px] font-mono text-[#00f0ff]/50 hover:text-[#00f0ff] hover:border-[#00f0ff]/40 transition-all uppercase tracking-widest"
+              className="flex items-center justify-center mt-2 py-1.5 bg-[#080812]/60 border border-[#00f0ff]/15 text-[9px] font-mono text-[#00f0ff]/50 hover:text-[#00f0ff] hover:border-[#00f0ff]/40 transition-all uppercase tracking-widest flex-shrink-0"
               style={{ clipPath: "polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))" }}
             >
               {">> VIEW_ALL_MARKETPLACE"}

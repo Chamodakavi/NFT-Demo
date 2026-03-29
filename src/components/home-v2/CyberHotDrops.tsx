@@ -46,7 +46,16 @@ function CyberHotDrops() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {hotDropNfts.map((nft, i) => (
-                <CyberNFTCard key={nft.id} nft={nft} index={i} />
+                <div
+                  key={nft.id}
+                  style={{
+                    border: "1px solid rgba(0,240,255,0.15)",
+                    animation: "hot-drop-blink 8s ease-in-out infinite",
+                    animationDelay: `${i * 2}s`,
+                  }}
+                >
+                  <CyberNFTCard nft={nft} index={i} />
+                </div>
               ))}
             </div>
           </div>

@@ -229,6 +229,12 @@ body::after {
   100% { background-position: 200% 50%; }
 }
 
+/* Hot Drop cards — sequential neon border blink (one at a time) */
+@keyframes hot-drop-blink {
+  0%, 20%, 100% { border-color: rgba(0,240,255,0.15); box-shadow: none; }
+  10% { border-color: rgba(0,240,255,0.8); box-shadow: 0 0 20px rgba(0,240,255,0.6), 0 0 60px rgba(0,240,255,0.15); }
+}
+
 /* Ad banner scan beam — sweeps top to bottom */
 @keyframes ad-scan-sweep {
   0% { transform: translateY(-100%); opacity: 0; }

@@ -42,8 +42,8 @@ export function CyberNavbar() {
   const navItems = [
     { label: "Explore", href: "/" },
     { label: "Marketplace", href: "/marketplace" },
-    { label: "Features", href: "#" },
-    { label: "How It Works", href: "#" },
+    { label: "Fees", href: "/fees" },
+    { label: "Flywheel", href: "/flywheel" },
     { label: "Community", href: "#" },
   ];
 

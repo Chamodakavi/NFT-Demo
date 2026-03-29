@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import type { NFT } from "@/data/mockNfts";
 import { CyberFlywheelTab } from "./CyberFlywheelTab";
@@ -35,10 +36,12 @@ function CyberTraitsTab({ nft }: { nft: NFT }) {
           aria-valuemax={100}
           aria-label={`Rarity: Rank ${nft.rarity} out of 10,000`}
         >
-          <div
+          <motion.div
             className="h-full"
+            initial={{ width: 0 }}
+            animate={{ width: `${Math.max(2, 100 - nft.rarityPercent * 10)}%` }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
             style={{
-              width: `${Math.max(2, 100 - nft.rarityPercent * 10)}%`,
               background: "linear-gradient(90deg, #00f0ff 0%, #C026D3 100%)",
               boxShadow: "0 0 10px rgba(0,240,255,0.6), 0 0 20px rgba(192,38,211,0.4)",
             }}
@@ -98,7 +101,7 @@ function CyberTraitsTab({ nft }: { nft: NFT }) {
                 aria-valuemax={100}
                 aria-label={`${trait.name}: ${trait.value}, ${trait.rarity}% rarity`}
               >
-                <div
+                <motion.div
                   className={`h-full ${
                     trait.rarity <= 3
                       ? "bg-[#ff0040]"
@@ -108,7 +111,10 @@ function CyberTraitsTab({ nft }: { nft: NFT }) {
                           ? "bg-[#ffcc00]"
                           : "bg-[#C026D3]"
                   }`}
-                  style={{ width: `${trait.rarity}%`, boxShadow: "0 0 6px currentColor" }}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${trait.rarity}%` }}
+                  transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 + i * 0.1 }}
+                  style={{ boxShadow: "0 0 6px currentColor" }}
                 />
               </div>
             </div>

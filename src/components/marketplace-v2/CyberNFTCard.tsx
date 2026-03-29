@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import type { NFT } from "@/data/mockNfts";
 
@@ -6,7 +9,60 @@ interface CyberNFTCardProps {
   index?: number;
 }
 
+const PARTICLE_COLORS = ["#00f0ff", "#C026D3", "#ffcc00"] as const;
+const PARTICLE_SHADOWS = [
+  "0 0 6px rgba(0,240,255,0.8)",
+  "0 0 6px rgba(192,38,211,0.8)",
+  "0 0 6px rgba(255,204,0,0.8)",
+] as const;
+
+function ParticleBurst({ active }: { active: boolean }) {
+  const [triggered, setTriggered] = useState(false);
+
+  useEffect(() => {
+    if (active) {
+      // Small delay to allow transition from center
+      const t = setTimeout(() => setTriggered(true), 10);
+      return () => clearTimeout(t);
+    }
+    setTriggered(false);
+  }, [active]);
+
+  if (!active) return null;
+
+  return (
+    <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden">
+      {Array.from({ length: 8 }).map((_, i) => {
+        const angle = (i / 8) * 360;
+        const rad = (angle * Math.PI) / 180;
+        const tx = Math.cos(rad) * 60;
+        const ty = Math.sin(rad) * 60;
+        const colorIdx = i % 3;
+
+        return (
+          <div
+            key={i}
+            className="absolute left-1/2 top-1/2 w-1.5 h-1.5 rounded-full"
+            style={{
+              background: PARTICLE_COLORS[colorIdx],
+              boxShadow: PARTICLE_SHADOWS[colorIdx],
+              transition: "all 0.5s ease-out",
+              transitionDelay: `${i * 30}ms`,
+              transform: triggered
+                ? `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0.5)`
+                : "translate(-50%, -50%) scale(1)",
+              opacity: triggered ? 0 : 1,
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
 export function CyberNFTCard({ nft, index = 0 }: CyberNFTCardProps) {
+  const [hovered, setHovered] = useState(false);
+
   const rarityLabel =
     nft.rarityPercent < 1
       ? `Top ${nft.rarityPercent}%`
@@ -24,6 +80,8 @@ export function CyberNFTCard({ nft, index = 0 }: CyberNFTCardProps) {
       href={`/marketplace/${nft.id}`}
       className="group cursor-pointer block"
       style={{ animation: `cyber-slide-in 0.5s ease-out ${index * 0.07}s both` }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <div className="relative cyber-clip bg-[#080812]/90 cyber-border overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,240,255,0.5),0_0_80px_rgba(0,240,255,0.15)] hover:border-[#00f0ff]/70">
         {/* Scanline overlay on image */}
@@ -36,6 +94,9 @@ export function CyberNFTCard({ nft, index = 0 }: CyberNFTCardProps) {
           {/* Vignette */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#080812] via-transparent to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-br from-[#00f0ff]/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+          {/* Particle burst on hover */}
+          <ParticleBurst active={hovered} />
 
           {/* Badge with neon glow */}
           <div
